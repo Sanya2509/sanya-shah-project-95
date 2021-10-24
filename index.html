@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kwiter</title>
+
+<link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/live/3.1/firebase.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="Kwitter.js"></script>
+</head>
+<body>
+
+<center>
+	<h1 class="header">	
+		Kwitter	<sup>
+	<img src="data:image/png;base64,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">
+	</sup>
+</h1>
+<marquee>Welcome to Lets Chat Web App</marquee><br><br>
+	<div class="col-lg-4 col-md-6 col-sm-6 col-xs-11 login_div">
+
+	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkvEMY1-mYf8rg6h90eeMUA6f6Hp400oH-KA&usqp=CAU" class="logo">
+		<h3>Login to Connect with each other right now!!</h3>
+
+
+		<div class="form-group">
+		  <label >User Name:</label>
+		 <input type="text" id="user_name" class="form-control" placeholder="User Name">
+		</div>
+
+		<button id="login_button" class="btn btn-primary" onclick="addUser()">Log in</button>
+		<br><br>
+	</div><br>
+
+    <b><u><i><h1 style="color:blue; font-size:40px;">WHO ARE WE?</h1></i></u></b> 
+    <h2> Our Team decided to try and make our own website. Together we decided to create Lets Chat Web App.<br>
+        
+
+        Let's Chat is a persistent messaging application. It's designed to be easily deployable and fits well with small, intimate teams.<br>If you would like to provide feedback regarding the accessibility of the site, please contact us at letschatsanyashah@gmail.com</h2>
+
+        <br><br>
+        <b><u><i><h1 style="color:purple;font-size:40px;">COMPATIBLE WITH ALL DEVICES</h1></i></u></b> 
+        <h2>Chat with friends across an array of devices, like desktop, Portal, and others.
+        </h2>
+        
+        
+          <br><br></brR>  <b><u><i><h1 style="color:green;font-size:40px;">Security</h1></i></u></b> 
+        <h2>Our Web App is perfectly secured with the help of India's First Trusted Security Program. 
+        </h2>
+      <br><br><br><br><br><br><br><div class="center" id="container">
+
+            
+          <u><h2 style="color:blue;font-size:30px;"><div class="center" id="texts" > 
+                Brought to you by Team Chat with Love 💓
+            </div></h2></u>
+            
+        
+<br><b>
+       <u> <h1 style="color:purple;font-size:30px;">For further details please contact 9882837456 or email us at letschatsanyashah@gmail.com</h1>
+    </b></u>
+    </div><br><br><br>
+<h1>_______________________________________________________________________________________________</h1>
+</center>
+
+</body>
+</html>
